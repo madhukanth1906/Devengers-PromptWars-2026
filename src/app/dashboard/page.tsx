@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
-import { UserCircle, FileText, AlertTriangle, BookOpen, Clock, Settings, LogOut } from "lucide-react";
+import { UserCircle, FileText, AlertTriangle, BookOpen, Clock, Settings, LogOut, Search } from "lucide-react";
 import Link from "next/link";
 
 const RECENT_ACTIVITY = [
