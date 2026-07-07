@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Menu, X, Shield, ChevronDown } from "lucide-react";
+import { Menu, X, Shield } from "lucide-react";
 
 const NAV_LINKS = [
   { name: "Home", href: "/" },

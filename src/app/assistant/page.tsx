@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Send, Bot, User, Mic } from "lucide-react";
-import { generateAssistantResponse } from "@/app/actions/ai-actions";
+import { generateText } from "@/lib/gemini";
 
 type Message = {
   role: "user" | "assistant";
@@ -27,12 +27,12 @@ export default function AssistantPage() {
     setIsLoading(true);
 
     try {
-      const response = await generateAssistantResponse(
+      const response = await generateText(
         userMessage, 
         "You are an expert AI Civic Assistant for India called Smart Bharat. Answer questions about Indian government schemes, certificates, taxes, and services accurately and concisely in a helpful tone. Format responses nicely."
       );
       setMessages((prev) => [...prev, { role: "assistant", content: response }]);
-    } catch (error) {
+    } catch (_error) {
       setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, I am having trouble connecting to the network right now. Please try again later." }]);
     } finally {
       setIsLoading(false);

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, ShieldCheck, FileText, MapPin, Search, Sparkles, Building2 } from "lucide-react";
+import { ArrowRight, Bot, ShieldCheck, FileText, MapPin, Search, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 
