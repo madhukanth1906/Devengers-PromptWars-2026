@@ -52,7 +52,11 @@ export async function generateText(prompt: string, systemInstruction?: string) {
   }
 
   try {
-    const response = await getAI().models.generateContent({
+    const ai = getAI();
+    if (!ai.apiKey || ai.apiKey === "") {
+      throw new Error("API key is missing, falling back to static replies.");
+    }
+    const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: sanitized,
       config: {
@@ -61,8 +65,22 @@ export async function generateText(prompt: string, systemInstruction?: string) {
     });
     return response.text ?? "I'm sorry, I couldn't generate a response.";
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    throw error;
+    console.error("Gemini API Error or missing key. Using static fallback.", error);
+    
+    // Static fallback for GitHub Pages without API key
+    const lowerPrompt = sanitized.toLowerCase();
+    
+    if (lowerPrompt.includes("hi") || lowerPrompt.includes("hai") || lowerPrompt.includes("hello")) {
+      return "Namaste! How can I help you with government services today?";
+    } else if (lowerPrompt.includes("scheme") || lowerPrompt.includes("kisan") || lowerPrompt.includes("yojana")) {
+      return "The PM Kisan Samman Nidhi provides income support of ₹6,000 per year to all landholding farmer families. You can apply through the 'Schemes' section on this portal.";
+    } else if (lowerPrompt.includes("complaint") || lowerPrompt.includes("pothole") || lowerPrompt.includes("issue")) {
+      return "I can help you report an issue! Please navigate to the 'Complaints' tab to file a new complaint with location details and photos.";
+    } else if (lowerPrompt.includes("document") || lowerPrompt.includes("aadhaar") || lowerPrompt.includes("pan")) {
+      return "To update your Aadhaar or PAN card, you can use the Government Services directory in the dashboard. Most updates can be done completely online now.";
+    }
+    
+    return "Thank you for reaching out to Smart Bharat. I am currently operating in offline mode. I can answer basic questions about PM Kisan, Aadhaar, and how to file complaints.";
   }
 }
 
