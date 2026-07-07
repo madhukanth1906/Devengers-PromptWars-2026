@@ -1,0 +1,33 @@
+{
+  "name": "h",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "firebase": "^10.12.0",
+    "@google/genai": "^2.10.0",
+    "framer-motion": "^11.2.0",
+    "lucide-react": "^0.379.0",
+    "zustand": "^4.5.2",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "latest",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
