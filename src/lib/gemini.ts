@@ -1,8 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
 // Initialize the Gemini API client
-// Note: Ensure NEXT_PUBLIC_GEMINI_API_KEY is set in your environment
-const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
+// Note: Ensure GEMINI_API_KEY is set in your environment
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 /**
  * Generate text using the Gemini model.

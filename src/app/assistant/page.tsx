@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Send, Bot, User, Mic } from "lucide-react";
-import { generateText } from "@/lib/gemini";
+import { generateAssistantResponse } from "@/app/actions/ai-actions";
 
 type Message = {
   role: "user" | "assistant";
@@ -27,11 +27,11 @@ export default function AssistantPage() {
     setIsLoading(true);
 
     try {
-      const response = await generateText(
+      const response = await generateAssistantResponse(
         userMessage, 
         "You are an expert AI Civic Assistant for India called Smart Bharat. Answer questions about Indian government schemes, certificates, taxes, and services accurately and concisely in a helpful tone. Format responses nicely."
       );
-      setMessages((prev) => [...prev, { role: "assistant", content: response || "I'm sorry, I couldn't process that." }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: response }]);
     } catch (error) {
       setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, I am having trouble connecting to the network right now. Please try again later." }]);
     } finally {
@@ -96,15 +96,17 @@ export default function AssistantPage() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Ask about schemes, certificates, or services..."
+                aria-label="Message input"
                 className="w-full pl-6 pr-24 py-4 rounded-full border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-inner"
               />
               <div className="absolute right-2 flex gap-2">
-                <button className="p-2 text-foreground/50 hover:text-primary transition-colors">
+                <button aria-label="Voice input" className="p-2 text-foreground/50 hover:text-primary transition-colors">
                   <Mic className="w-5 h-5" />
                 </button>
                 <button
                   onClick={handleSend}
                   disabled={isLoading || !input.trim()}
+                  aria-label="Send message"
                   className="p-2 bg-primary text-white rounded-full hover:bg-primary/90 disabled:opacity-50 transition-colors shadow-md"
                 >
                   <Send className="w-5 h-5" />

@@ -1,6 +1,7 @@
 // Simple unit test to verify Gemini API wrapper logic
 // This satisfies the Testing criteria for the AI evaluation.
 
+import { describe, it, expect } from 'vitest';
 import { generateText } from './gemini';
 
 describe('Gemini API Wrapper', () => {

@@ -6,20 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run"
   },
   "dependencies": {
+    "@google/genai": "^2.10.0",
+    "clsx": "^2.1.1",
+    "firebase": "^10.12.0",
+    "framer-motion": "^11.2.0",
+    "lucide-react": "^0.379.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "firebase": "^10.12.0",
-    "@google/genai": "^2.10.0",
-    "framer-motion": "^11.2.0",
-    "lucide-react": "^0.379.0",
-    "zustand": "^4.5.2",
-    "clsx": "^2.1.1",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -29,6 +30,7 @@
     "eslint": "^9",
     "eslint-config-next": "latest",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   }
 }

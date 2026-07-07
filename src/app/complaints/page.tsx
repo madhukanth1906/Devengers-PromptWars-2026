@@ -48,8 +48,8 @@ export default function ComplaintsPage() {
               onSubmit={() => setStep(2)} className="space-y-6"
             >
               <div>
-                <label className="block text-sm font-medium mb-2">Category</label>
-                <select required className="w-full p-4 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none">
+                <label htmlFor="issue-category" className="block text-sm font-medium mb-2">Category</label>
+                <select id="issue-category" required className="w-full p-4 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none">
                   <option value="">Select an issue category</option>
                   <option value="road">Road & Potholes</option>
                   <option value="garbage">Garbage & Sanitation</option>
@@ -95,8 +95,9 @@ export default function ComplaintsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Additional Details (Optional)</label>
+                <label htmlFor="issue-details" className="block text-sm font-medium mb-2">Additional Details (Optional)</label>
                 <textarea 
+                  id="issue-details"
                   rows={5}
                   placeholder="E.g., This pothole has been here for 2 weeks..."
                   className="w-full p-4 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none resize-none"
