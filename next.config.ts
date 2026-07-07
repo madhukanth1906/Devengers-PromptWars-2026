@@ -6,7 +6,6 @@ const repoName = "Devengers-PromptWars-2026";
 const nextConfig: NextConfig = {
   output: "export",
   basePath: isProd ? `/${repoName}` : "",
-  assetPrefix: isProd ? `/${repoName}/` : "",
   images: {
     unoptimized: true,
   },

@@ -1,8 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize the Gemini API client
-// API key is injected at build time for static export.
-const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
+// Lazy-initialize the Gemini API client.
+// This prevents crashes on pages that import this module
+// but don't actually call the AI (e.g., during static site generation).
+let _ai: GoogleGenAI | null = null;
+
+function getAI(): GoogleGenAI {
+  if (!_ai) {
+    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY ?? "";
+    _ai = new GoogleGenAI({ apiKey });
+  }
+  return _ai;
+}
 
 /**
  * Sanitizes user input to prevent prompt injection attacks.
@@ -43,7 +52,7 @@ export async function generateText(prompt: string, systemInstruction?: string) {
   }
 
   try {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
       model: "gemini-2.5-flash",
       contents: sanitized,
       config: {
@@ -61,7 +70,7 @@ export async function generateText(prompt: string, systemInstruction?: string) {
  * Start a chat session with Gemini to maintain conversation history.
  */
 export function startChatSession(systemInstruction?: string) {
-  return ai.chats.create({
+  return getAI().chats.create({
     model: "gemini-2.5-flash",
     config: {
       systemInstruction: systemInstruction,
