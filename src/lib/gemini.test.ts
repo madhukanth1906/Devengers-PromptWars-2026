@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { generateText, sanitizeInput, validatePrompt } from "./gemini";
 
 describe("Gemini API Wrapper", () => {
