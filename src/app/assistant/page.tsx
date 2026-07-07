@@ -31,7 +31,7 @@ export default function AssistantPage() {
         userMessage, 
         "You are an expert AI Civic Assistant for India called Smart Bharat. Answer questions about Indian government schemes, certificates, taxes, and services accurately and concisely in a helpful tone. Format responses nicely."
       );
-      setMessages((prev) => [...prev, { role: "assistant", content: response }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: response || "I'm sorry, I couldn't process that." }]);
     } catch (error) {
       setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, I am having trouble connecting to the network right now. Please try again later." }]);
     } finally {
