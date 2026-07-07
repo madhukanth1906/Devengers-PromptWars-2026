@@ -1,6 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { act } from "react";
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
 import ComplaintsPage from "./page";
 
 // Mock matchMedia for jsdom
@@ -23,4 +22,5 @@ describe("Complaints Page Component", () => {
     render(<ComplaintsPage />);
     expect(screen.getByText("Report a Public Issue")).toBeInTheDocument();
     expect(screen.getByLabelText("Category")).toBeInTheDocument();
+  });
 });

@@ -1,6 +1,8 @@
 {
   "name": "h",
   "version": "0.1.0",
+  "description": "GenAI-powered civic platform, report public issues, intelligent AI companion, transparency, accessibility, digital inclusion.",
+  "keywords": ["GenAI-powered civic platform", "government services", "report public issues", "intelligent AI companion", "transparency", "accessibility", "digital inclusion"],
   "private": true,
   "scripts": {
     "dev": "next dev",
