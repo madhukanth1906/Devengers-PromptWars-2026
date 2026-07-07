@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Bot, ShieldCheck, FileText, MapPin, Search, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
+import React from "react";
 
 const FEATURES = [
   {
@@ -39,7 +40,13 @@ const STATS = [
   { label: "Government Schemes", value: "500+" },
 ];
 
-export default function Home() {
+/**
+ * The main landing page for Smart Bharat.
+ * Provides entry points to all civic features like AI Assistant, Schemes, and Complaints.
+ * 
+ * @returns {React.JSX.Element} The rendered landing page.
+ */
+export default function HomePage(): React.JSX.Element {
   return (
     <main className="min-h-screen bg-background relative overflow-hidden">
       {/* Background Gradients */}
