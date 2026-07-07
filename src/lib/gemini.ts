@@ -53,7 +53,8 @@ export async function generateText(prompt: string, systemInstruction?: string) {
 
   try {
     const ai = getAI();
-    if (!ai.apiKey || ai.apiKey === "") {
+    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY ?? "";
+    if (!apiKey || apiKey === "") {
       throw new Error("API key is missing, falling back to static replies.");
     }
     const response = await ai.models.generateContent({
