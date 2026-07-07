@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Shield } from "lucide-react";
 
+/**
+ * Static navigation links configuration.
+ */
 const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "AI Assistant", href: "/assistant" },
@@ -13,7 +16,11 @@ const NAV_LINKS = [
   { name: "Complaints", href: "/complaints" },
 ];
 
-export function Navbar() {
+/**
+ * Responsive Navigation Bar component.
+ * Memoized to prevent unnecessary re-renders on page state changes.
+ */
+export const Navbar = React.memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,6 +32,9 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
+  const closeMenu = useCallback(() => setIsOpen(false), []);
+
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -34,7 +44,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group" aria-label="Home">
+          <Link href="/" className="flex items-center gap-2 group" aria-label="Home" onClick={closeMenu}>
             <div className="p-2 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors">
               <Shield className="w-6 h-6 text-primary" />
             </div>
@@ -65,8 +75,9 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={toggleMenu}
               aria-label="Toggle mobile menu"
+              aria-expanded={isOpen}
               className="text-foreground p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -76,34 +87,39 @@ export function Navbar() {
       </div>
 
       {/* Mobile Nav */}
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="md:hidden absolute top-full left-0 w-full glass border-t border-border/50 shadow-xl"
-        >
-          <div className="px-4 py-6 space-y-4 flex flex-col">
-            {NAV_LINKS.map((link) => (
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="md:hidden absolute top-full left-0 w-full glass border-t border-border/50 shadow-xl"
+          >
+            <div className="px-4 py-6 space-y-4 flex flex-col">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="block text-lg font-medium text-foreground/80 hover:text-primary p-2 rounded-lg hover:bg-primary/5 transition-colors"
+                  onClick={closeMenu}
+                >
+                  {link.name}
+                </Link>
+              ))}
               <Link
-                key={link.name}
-                href={link.href}
-                className="block text-lg font-medium text-foreground/80 hover:text-primary p-2 rounded-lg hover:bg-primary/5 transition-colors"
-                onClick={() => setIsOpen(false)}
+                href="/dashboard"
+                className="w-full text-center mt-4 px-5 py-3 rounded-xl bg-primary text-white font-medium shadow-md"
+                onClick={closeMenu}
               >
-                {link.name}
+                Dashboard
               </Link>
-            ))}
-            <Link
-              href="/dashboard"
-              className="w-full text-center mt-4 px-5 py-3 rounded-xl bg-primary text-white font-medium shadow-md"
-              onClick={() => setIsOpen(false)}
-            >
-              Dashboard
-            </Link>
-          </div>
-        </motion.div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
-}
+});
+
+Navbar.displayName = "Navbar";
+

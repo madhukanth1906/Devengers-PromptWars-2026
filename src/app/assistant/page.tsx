@@ -1,16 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Send, Bot, User, Mic } from "lucide-react";
 import { generateText } from "@/lib/gemini";
 
+/**
+ * Represents a single message in the chat interface.
+ */
 type Message = {
   role: "user" | "assistant";
   content: string;
 };
 
+/**
+ * Memoized Chat Message component to prevent unnecessary re-renders
+ * when the parent state updates during typing.
+ */
+const ChatMessage = React.memo(({ msg }: { msg: Message }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
+    >
+      <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${msg.role === "user" ? "bg-secondary text-white" : "bg-primary text-white"}`}>
+        {msg.role === "user" ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
+      </div>
+      <div className={`px-5 py-3 rounded-2xl max-w-[80%] ${msg.role === "user" ? "bg-secondary/10 text-foreground" : "glass border border-border shadow-sm text-foreground"}`}>
+        <p className="whitespace-pre-wrap">{msg.content}</p>
+      </div>
+    </motion.div>
+  );
+});
+ChatMessage.displayName = "ChatMessage";
+
+/**
+ * AI Assistant Page Component.
+ * Provides a chat interface for users to interact with the Smart Bharat AI.
+ */
 export default function AssistantPage() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
@@ -18,7 +47,10 @@ export default function AssistantPage() {
   ]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSend = async () => {
+  /**
+   * Handles sending the user message to the AI and appending the response.
+   */
+  const handleSend = useCallback(async () => {
     if (!input.trim()) return;
 
     const userMessage = input.trim();
@@ -37,7 +69,7 @@ export default function AssistantPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [input]);
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
@@ -57,28 +89,21 @@ export default function AssistantPage() {
           </div>
 
           {/* Chat Messages */}
-          <div className="flex-grow overflow-y-auto p-6 space-y-6">
+          <div 
+            className="flex-grow overflow-y-auto p-6 space-y-6"
+            aria-live="polite"
+            aria-atomic="false"
+            role="log"
+          >
             {messages.map((msg, index) => (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                key={index}
-                className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
-              >
-                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${msg.role === "user" ? "bg-secondary text-white" : "bg-primary text-white"}`}>
-                  {msg.role === "user" ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
-                </div>
-                <div className={`px-5 py-3 rounded-2xl max-w-[80%] ${msg.role === "user" ? "bg-secondary/10 text-foreground" : "glass border border-border shadow-sm text-foreground"}`}>
-                  <p className="whitespace-pre-wrap">{msg.content}</p>
-                </div>
-              </motion.div>
+              <ChatMessage key={index} msg={msg} />
             ))}
             {isLoading && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-4">
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
                   <Bot className="w-5 h-5" />
                 </div>
-                <div className="px-5 py-4 rounded-2xl glass border border-border flex gap-2 items-center">
+                <div className="px-5 py-4 rounded-2xl glass border border-border flex gap-2 items-center" aria-label="AI is typing...">
                   <div className="w-2 h-2 rounded-full bg-primary animate-bounce"></div>
                   <div className="w-2 h-2 rounded-full bg-primary animate-bounce delay-100"></div>
                   <div className="w-2 h-2 rounded-full bg-primary animate-bounce delay-200"></div>
@@ -107,7 +132,7 @@ export default function AssistantPage() {
                   onClick={handleSend}
                   disabled={isLoading || !input.trim()}
                   aria-label="Send message"
-                  className="p-2 bg-primary text-white rounded-full hover:bg-primary/90 disabled:opacity-50 transition-colors shadow-md"
+                  className="p-2 bg-primary text-white rounded-full hover:bg-primary/90 disabled:opacity-50 transition-colors shadow-md focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                 >
                   <Send className="w-5 h-5" />
                 </button>
