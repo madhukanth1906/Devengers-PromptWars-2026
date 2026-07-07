@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import HomePage from "./page";
 
 // Mock matchMedia for jsdom
@@ -17,6 +17,22 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 });
 
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({ children, className }: any) => <div className={className}>{children}</div>,
+    h1: ({ children, className }: any) => <h1 className={className}>{children}</h1>,
+    p: ({ children, className }: any) => <p className={className}>{children}</p>,
+  },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
+}));
+
+class MockIntersectionObserver {
+  observe = vi.fn();
+  disconnect = vi.fn();
+  unobserve = vi.fn();
+}
+
+global.IntersectionObserver = MockIntersectionObserver as any;
 describe("Home Page Component", () => {
   it("renders the hero section correctly", () => {
     render(<HomePage />);
